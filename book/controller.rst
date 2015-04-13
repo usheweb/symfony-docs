@@ -11,10 +11,10 @@ a serialized JSON array, an image, a redirect, a 404 error or anything else
 you can dream up. The controller contains whatever arbitrary logic *your
 application* needs to render the content of a page.
 
-控制器由于为HTTP请求创建并且返回HTTP响应信息(一个Symfony``响应`` 对象)。
+控制器由于为HTTP请求创建并且返回HTTP响应信息(一个Symfony ``响应`` 对象)。
 响应内容可以是一个HTML页面，一个XML文档，一个序列化的JSON数组，一张图片，
-一个url重定向，一个404错误页面或者其它内容。控制器可以包含任意逻辑，让*你的
-应用*程渲染出你想要的页面。
+一个url重定向，一个404错误页面或者其它内容。控制器可以包含任意逻辑，让 *你的
+应用* 程渲染出你想要的页面。
 
 See how simple this is by looking at a Symfony controller in action.
 This renders a page that prints the famous ``Hello world!``::
