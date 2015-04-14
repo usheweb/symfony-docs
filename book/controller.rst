@@ -23,68 +23,49 @@ Controller
 对象. 在http请求过程中, 可能从request中读取信息, 加载数据库资源, 发送email, 或者在用户的session中设置信息.
 任何情况下, 控制器都会返回一个 ``Response`` 对象给客户端.
 
-There's no magic and no other requirements to worry about! Here are a few
-common examples:
+There's no magic and no other requirements to worry about! 下面是一些常见的例子:
 
-* *Controller A* prepares a ``Response`` object representing the content
-  for the homepage of the site.
+* *控制器A* 准备一个 ``Response`` 对象 作为站点的主页内容.
 
-* *Controller B* reads the ``slug`` parameter from the request to load a
-  blog entry from the database and creates a ``Response`` object displaying
-  that blog. If the ``slug`` can't be found in the database, it creates and
-  returns a ``Response`` object with a 404 status code.
+* *控制器B* 通过读取请求参数从数据库中加载日志并且创建 ``Response`` 对象显示这篇日志. 
+如果请求的数据在数据库中没有找到, 将会返回一个带404状态码的 ``Response`` 对象.
 
-* *Controller C* handles the form submission of a contact form. It reads
-  the form information from the request, saves the contact information to
-  the database and emails the contact information to you. Finally, it creates
-  a ``Response`` object that redirects the client's browser to the contact
-  form "thank you" page.
+* *控制器 C* 处理一提交的表单. 从请求中读取表单信息, 为你将电子邮箱等联系信息保存到数据库中. 
+最后, 通过一个带浏览器地址跳转的 ``Response`` 对象到 "thank you" 页面.
 
 .. index::
    single: Controller; Request-controller-response lifecycle
 
-Requests, Controller, Response Lifecycle
+请求, 控制器, 响应的生命周期
 ----------------------------------------
 
-Every request handled by a Symfony project goes through the same simple lifecycle.
-The framework takes care of all the repetitive stuff: you just need to write
-your custom code in the controller function:
+Symfony 项目中的每一个请求处理都有着相同的简单生命周期.
+框架负责所有重复的东西: 你只需要写一些自己的代码在控制器函数中:
 
-#. Each request is handled by a single front controller file (e.g. ``app.php``
-   or ``app_dev.php``) that bootstraps the application;
+#. 每一个请求都交给一个前端控制器文件来加载应用程序 (e.g. ``app.php`` 或者 ``app_dev.php``);
 
-#. The ``Router`` reads information from the request (e.g. the URI), finds
-   a route that matches that information, and reads the ``_controller`` parameter
-   from the route;
+#. 路由从请求中读取信息 (e.g. the URI), 找到匹配的路由信息, 在路由中读取控制参数;
 
-#. The controller from the matched route is executed and the code inside the
-   controller creates and returns a ``Response`` object;
+#. 被路由匹配的控制器中的代码将会被执行并且返回 ``Response`` 对象;
 
-#. The HTTP headers and content of the ``Response`` object are sent back to
-   the client.
+#. ``Response`` 对象把HTTP响应头和响应内容返回给客户端.
 
-Creating a page is as easy as creating a controller (#3) and making a route that
-maps a URL to that controller (#2).
+通过创建一个控制器和(#3) 制作一个路由URL连接到控制器 (#2)就可轻松的获得一个页面.
 
 .. note::
 
-    Though similarly named, a "front controller" is different from the
-    "controllers" talked about in this chapter. A front controller
-    is a short PHP file that lives in your web directory and through which
-    all requests are directed. A typical application will have a production
-    front controller (e.g. ``app.php``) and a development front controller
-    (e.g. ``app_dev.php``). You'll likely never need to edit, view or worry
-    about the front controllers in your application.
+    虽然命名类似, 前端控制器和本章节讨论的控制器是不一样的. 前端控制器是一个短的PHP文件,
+    放在您的web根目录并且所有请求都直接通过它. 通常一个应用程序有一个生产环境 (e.g. ``app.php``) 
+    和一个开发环境的前端控制器(e.g. ``app_dev.php``). 不需要为编辑应用程序中的前端控制器而担心.
 
 .. index::
    single: Controller; Simple example
 
-A Simple Controller
+简单的控制器
 -------------------
 
-While a controller can be any PHP callable (a function, method on an object,
-or a ``Closure``), a controller is usually a method inside a controller class.
-Controllers are also called *actions*.
+控制器可以是任意的PHP可执行方法 (函数, 对象方法,或者闭包), 控制器通常使用类文件中的方法.
+控制器也被称为 *actions*.
 
 .. code-block:: php
 
@@ -103,41 +84,33 @@ Controllers are also called *actions*.
 
 .. tip::
 
-    Note that the *controller* is the ``indexAction`` method, which lives
-    inside a *controller class* (``HelloController``). Don't be confused
-    by the naming: a *controller class* is simply a convenient way to group
-    several controllers/actions together. Typically, the controller class
-    will house several controllers/actions (e.g. ``updateAction``, ``deleteAction``,
+    这个控制器是一个 ``indexAction`` 方法, 放在控制器类中(``HelloController``). 
+    不要为命而困惑: 一个控制器类把多个控制器方法集合在一起. 
+    通常一个控制器类有多个这样的action (e.g. ``updateAction``, ``deleteAction``,
     etc).
 
-This controller is pretty straightforward:
+这是一个相当简单的控制器:
 
-* *line 4*: Symfony takes advantage of PHP's namespace functionality to
-  namespace the entire controller class. The ``use`` keyword imports the
-  ``Response`` class, which the controller must return.
+* *第4行*: Symfony 的控制器类文件采用了PHP的命名空间功能. 
+  use关键字加载了一个控制器用到的Response类.
 
-* *line 6*: The class name is the concatenation of a name for the controller
-  class (i.e. ``Hello``) and the word ``Controller``. This is a convention
-  that provides consistency to controllers and allows them to be referenced
-  only by the first part of the name (i.e. ``Hello``) in the routing configuration.
+* *第6行*: 类名由控制器名称(i.e. ``Hello``)和单词Controller组合而成. 这是一个约定,
+为控制器提供一致性,并允许他们被引用,只有第一部分的名字(i.e. ``Hello``) 在路由中配置.
 
-* *line 8*: Each action in a controller class is suffixed with ``Action``
-  and is referenced in the routing configuration by the action's name (``index``).
-  In the next section, you'll create a route that maps a URI to this action.
-  You'll learn how the route's placeholders (``{name}``) become arguments
-  to the action method (``$name``).
+* *地8行*: 每一个控制器都包含一个后缀 ``Action``和路由配置对应的名字组合 (``index``).
+  下一节中, 将会学习通过路由映射URL到action.学习如何把路由中的占位符 (``{name}``) 
+  变成action 方法中的参数 (``$name``).
 
-* *line 10*: The controller creates and returns a ``Response`` object.
+* *第10行*: 控制器返回一个``Response`` 对象.
 
 .. index::
    single: Controller; Routes and controllers
 
-Mapping a URL to a Controller
+映射URL到Controller
 -----------------------------
 
-The new controller returns a simple HTML page. To actually view this page
-in your browser, you need to create a route, which maps a specific URL path
-to the controller:
+新的控制器返回一个简单的HTML页面. 在您的浏览器中查看此页面, 你需要创建一个路由, 
+把特定的URL映射到控制器:
 
 .. configuration-block::
 
