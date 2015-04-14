@@ -4,20 +4,13 @@
 Controller
 ==========
 
-A controller is a PHP callable you create that takes information from the
-HTTP request and creates and returns an HTTP response (as a Symfony
-``Response`` object). The response could be an HTML page, an XML document,
-a serialized JSON array, an image, a redirect, a 404 error or anything else
-you can dream up. The controller contains whatever arbitrary logic *your
-application* needs to render the content of a page.
-
-控制器由于为HTTP请求创建并且返回HTTP响应信息(一个Symfony ``响应`` 对象)。
+控制器用于为HTTP请求创建并且返回HTTP响应信息(一个Symfony ``Response`` 对象)。
 响应内容可以是一个HTML页面，一个XML文档，一个序列化的JSON数组，一张图片，
 一个url重定向，一个404错误页面或者其它内容。控制器可以包含任意逻辑，让 *你的
 应用* 程渲染出你想要的页面。
 
-See how simple this is by looking at a Symfony controller in action.
-This renders a page that prints the famous ``Hello world!``::
+来看一个简单的Symfony控制器动作.
+在页面重输出一个经典的 ``Hello world!``::
 
     use Symfony\Component\HttpFoundation\Response;
 
@@ -26,11 +19,9 @@ This renders a page that prints the famous ``Hello world!``::
         return new Response('Hello world!');
     }
 
-The goal of a controller is always the same: create and return a ``Response``
-object. Along the way, it might read information from the request, load a
-database resource, send an email, or set information on the user's session.
-But in all cases, the controller will eventually return the ``Response`` object
-that will be delivered back to the client.
+所有控制器的共同目标是: 创建并返回一个 ``Response``
+对象. 在http请求过程中, 可能从request中读取信息, 加载数据库资源, 发送email, 或者在用户的session中设置信息.
+任何情况下, 控制器都会返回一个 ``Response`` 对象给客户端.
 
 There's no magic and no other requirements to worry about! Here are a few
 common examples:
