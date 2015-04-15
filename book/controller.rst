@@ -175,13 +175,12 @@ if you're using the :doc:`built-in web server </cookbook/web_server/built_in>`)
 Symfony 将会执行 ``HelloController::indexAction()`` 控制器，
 ``ryan`` 被放到变量 ``$name`` 中. 通过一个简单的控制器方法并且路由联系起来就可创建一个页面。
 
-Simple, right?
+简单,是吧?
 
-.. sidebar:: The AppBundle:Hello:index controller syntax
+.. sidebar:: AppBundle:Hello:index 控制器语法
 
-    If you use the YML or XML formats, you'll refer to the controller using
-    a special shortcut syntax: ``AppBundle:Hello:index``. For more details
-    on the controller format, see :ref:`controller-string-syntax`.
+    如果你使用 YML或者XML格式, 将为控制器使用一个快捷的简短语法: ``AppBundle:Hello:index``. 
+    更多控制器上的格式细节, 查看 :ref:`controller-string-syntax`.
 
 .. seealso::
 
@@ -193,12 +192,11 @@ Simple, right?
 
 .. _route-parameters-controller-arguments:
 
-Route Parameters as Controller Arguments
+路由参数作为控制器参数
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You already know that the route points to the
-``HelloController::indexAction()`` method that lives inside AppBundle. What's
-more interesting is the argument that is passed to that method::
+目前为止你已经知道通过路由指向AppBundle中的 ``HelloController::indexAction()`` 方法
+怎么才能为控制器方法传递参数::
 
     // src/AppBundle/Controller/HelloController.php
     // ...
@@ -212,14 +210,11 @@ more interesting is the argument that is passed to that method::
         // ...
     }
 
-The controller has a single argument, ``$name``, which corresponds to the
-``{name}`` parameter from the matched route (``ryan`` if you go to ``/hello/ryan``).
-When executing your controller, Symfony matches each argument with a parameter
-from the route. So the value for ``{name}`` is passed to ``$name``.
+控制器中有一个参数 ``$name``,当你的控制器执行的时候将会和路由中的
+参数相对应(``ryan`` if you go to ``/hello/ryan``), Symfony 自动匹配每一个路由中的参数.
+所以 ``{name}`` 中的值传递给了 ``$name``.
 
-Take the following more-interesting example:
-
-.. configuration-block::
+下面介绍一些更有趣的例子:
 
     .. code-block:: php-annotations
 
@@ -273,49 +268,44 @@ Take the following more-interesting example:
 
         return $collection;
 
-Now, the controller can have two arguments::
+现在控制器中有2个参数::
 
     public function indexAction($firstName, $lastName)
     {
         // ...
     }
 
-Mapping route parameters to controller arguments is easy and flexible. Keep
-the following guidelines in mind while you develop.
+路由参数映射到控制器参数很容易并且灵活. 开发的时候请记住下面几点.
 
-* **The order of the controller arguments does not matter**
+* **控制器参数的顺序无关紧要**
 
-  Symfony matches the parameter **names** from the route to the variable
-  **names** of the controller. The arguments of the controller could be totally
-  reordered and still work perfectly::
+  Symfony 通过路由变量 **names** 匹配到控制器参数 **names**. 
+  参数的顺序可以任意排放::
 
       public function indexAction($lastName, $firstName)
       {
           // ...
       }
 
-* **Each required controller argument must match up with a routing parameter**
+* **每一个控制器参数都需要与路由参数匹配**
 
-  The following would throw a ``RuntimeException`` because there is no ``foo``
-  parameter defined in the route::
+   路由中没有定义``foo`` 参数将会抛出一个 ``RuntimeException`` ::
 
       public function indexAction($firstName, $lastName, $foo)
       {
           // ...
       }
 
-  Making the argument optional, however, is perfectly ok. The following
-  example would not throw an exception::
+  给参数添加可选值可以避免抛出异常::
 
       public function indexAction($firstName, $lastName, $foo = 'bar')
       {
           // ...
       }
 
-* **Not all routing parameters need to be arguments on your controller**
+* **不需要将所有的路由参数对应到控制器参数中**
 
-  If, for example, the ``lastName`` weren't important for your controller,
-  you could omit it entirely::
+  如有一个参数 ``lastName` 在控制器中没有定义，完全可以忽略它::
 
       public function indexAction($firstName)
       {
@@ -332,13 +322,12 @@ the following guidelines in mind while you develop.
 
 .. _book-controller-request-argument:
 
-The ``Request`` as a Controller Argument
+请求作为控制器参数
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-What if you need to read query parameters, grab a request header or get access
-to an uploaded file? All of that information is stored in Symfony's ``Request``
-object. To get it in your controller, just add it as an argument and
-**type-hint it with the Request class**::
+如果需要读取一个查询参数, 抓取一个请求头或者访问一个上传的文件? 
+所有信息都储存在 Symfony的 ``Request``
+对象中. 想在控制器中获取，把它作为控制器参数添加即可::
 
     use Symfony\Component\HttpFoundation\Request;
 
@@ -357,15 +346,14 @@ object. To get it in your controller, just add it as an argument and
 .. index::
    single: Controller; Base controller class
 
-The Base Controller Class
+基本控制器类
 -------------------------
 
-For convenience, Symfony comes with an optional base ``Controller`` class.
-If you extend it, you'll get access to a number of helper methods and all
-of your service objects via the container (see :ref:`controller-accessing-services`).
+为了方便, Symfony有一个可选的控制器基类.
+如果继承它,你会获得一些辅助方法和所有被容器包含的服务
+(see :ref:`controller-accessing-services`).
 
-Add the ``use`` statement atop the ``Controller`` class and then modify the
-``HelloController`` to extend it::
+在控制器类添加use语句,然后修改“HelloController“继承它::
 
     // src/AppBundle/Controller/HelloController.php
     namespace AppBundle\Controller;
@@ -377,12 +365,9 @@ Add the ``use`` statement atop the ``Controller`` class and then modify the
         // ...
     }
 
-This doesn't actually change anything about how your controller works: it
-just gives you access to helper methods that the base controller class makes
-available. These are just shortcuts to using core Symfony functionality that's
-available to you with or without the use of the base ``Controller`` class.
-A great way to see the core functionality in action is to look in the
-`Controller class`_.
+不会影响控制器中的其他任意代码: 只是让你能够使用基类中的一些辅助方法. 
+这只是使用Symfony核心功能的快捷方式,也可以不使用基控制器类.
+最好直接查看控制器中的核心方法 `Controller class`_.
 
 .. seealso::
 
@@ -394,10 +379,10 @@ A great way to see the core functionality in action is to look in the
 .. index::
    single: Controller; Redirecting
 
-Redirecting
+重定向
 ~~~~~~~~~~~
 
-If you want to redirect the user to another page, use the ``redirectToRoute()`` method::
+如果你想将用户重定向到另一个页面, 可以使用 ``redirectToRoute()`` 方法::
 
     public function indexAction()
     {
@@ -411,15 +396,15 @@ If you want to redirect the user to another page, use the ``redirectToRoute()`` 
     The ``redirectToRoute()`` method was added in Symfony 2.6. Previously (and still now), you
     could use ``redirect()`` and ``generateUrl()`` together for this (see the example above).
 
-Or, if you want to redirect externally, just use ``redirect()`` and pass it the URL::
+如果需要重定向到外部网址, 使用 ``redirect()`` 跳转到指定的URL::
 
     public function indexAction()
     {
         return $this->redirect('http://symfony.com/doc');
     }
 
-By default, the ``redirectToRoute()`` method performs a 302 (temporary) redirect. To
-perform a 301 (permanent) redirect, modify the third argument::
+默认情况下， ``redirectToRoute()`` 使用302重定向. 如果需要使用301重定向，
+修改第三个参数即可::
 
     public function indexAction()
     {
@@ -428,9 +413,7 @@ perform a 301 (permanent) redirect, modify the third argument::
 
 .. tip::
 
-    The ``redirectToRoute()`` method is simply a shortcut that creates a
-    ``Response`` object that specializes in redirecting the user. It's
-    equivalent to::
+    ``redirectToRoute()`` 方法是一个专门为用户重定向的一个简单操作. 等价于::
 
         use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -444,33 +427,30 @@ perform a 301 (permanent) redirect, modify the third argument::
 
 .. _controller-rendering-templates:
 
-Rendering Templates
+模板渲染
 ~~~~~~~~~~~~~~~~~~~
 
-If you're serving HTML, you'll want to render a template. The ``render()``
-method renders a template **and** puts that content into a ``Response``
-object for you::
+如果做HTML文本服务.将需要渲染模板, ``render()``
+方法可以渲染模板并且返回内容给你::
 
     // renders app/Resources/views/hello/index.html.twig
     return $this->render('hello/index.html.twig', array('name' => $name));
 
-You can also put templates in deeper sub-directories. Just try to avoid creating
-unnecessarily deep structures::
+你可以把模板放在更深层次的子目录中. 避免创建不必要的深层结构::
 
     // renders app/Resources/views/hello/greetings/index.html.twig
     return $this->render('hello/greetings/index.html.twig', array(
         'name' => $name
     ));
 
-The Symfony templating engine is explained in great detail in the
-:doc:`Templating </book/templating>` chapter.
+Symfony模板引擎的详细内容请直接查看
+:doc:`Templating </book/templating>` 章节.
 
-.. sidebar:: Referencing Templates that Live inside the Bundle
+.. sidebar:: Bundle中引入模板
 
-    You can also put templates in the ``Resources/views`` directory of a
-    bundle and reference them with a
-    ``BundleName:DirectoryName:FileName`` syntax. For example,
-    ``AppBundle:Hello:index.html.twig`` would refer to the template located in
+    可以把模板放在bundle中的 ``Resources/views`` 目录，通过
+    ``BundleName:DirectoryName:FileName`` 方式引用. 例如,
+    ``AppBundle:Hello:index.html.twig`` 需要把模板放在
     ``src/AppBundle/Resources/views/Hello/index.html.twig``. See :ref:`template-referencing-in-bundle`.
 
 .. index::
@@ -478,16 +458,15 @@ The Symfony templating engine is explained in great detail in the
 
 .. _controller-accessing-services:
 
-Accessing other Services
+访问其他服务
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Symfony comes packed with a lot of useful objects, called services. These
-are used for rendering templates, sending emails, querying the database and
-any other "work" you can think of. When you install a new bundle, it probably
-brings in even *more* services.
+Symfony中有很多有用的对象, 称为服务. 可用于渲染模板, 发送邮件, 
+查询数据库以及其他你想要的工作. 当你安装一个新的bundle, 
+它可能带来更多的服务.
 
-When extending the base controller class, you can access any Symfony service
-via the ``get()`` method. Here are several common services you might need::
+基础基控制器类以后, 可以通过 ``get()`` 方法获取Symfony的服务. 
+这里有一些您可能需要的公共服务::
 
     $templating = $this->get('templating');
 
@@ -495,8 +474,8 @@ via the ``get()`` method. Here are several common services you might need::
 
     $mailer = $this->get('mailer');
 
-What other services exist? To list all services, use the ``debug:container``
-console command:
+有些什么其他的服务? 所有的服务列表, 使用控制台的 ``debug:container``
+ 命令查看:
 
 .. code-block:: bash
 
@@ -511,12 +490,12 @@ For more information, see the :doc:`/book/service_container` chapter.
    single: Controller; Managing errors
    single: Controller; 404 pages
 
-Managing Errors and 404 Pages
+管理404错误页面
 -----------------------------
 
-When things are not found, you should play well with the HTTP protocol and
-return a 404 response. To do this, you'll throw a special type of exception.
-If you're extending the base controller class, do the following::
+没有找到任何东西的时候，将会返回一个404错误页面. 
+要做到这一点,需要抛出一种特殊类型的异常.
+如果继承了基控制器类，可以使用下面的方法::
 
     public function indexAction()
     {
@@ -529,38 +508,35 @@ If you're extending the base controller class, do the following::
         return $this->render(...);
     }
 
-The ``createNotFoundException()`` method is just a shortcut to create a
-special :class:`Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException`
-object, which ultimately triggers a 404 HTTP response inside Symfony.
+``createNotFoundException()`` 是一个创建指定类
+:class:`Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException` 的对象的简单方法,
+Symfony最终会生成一个404的HTTP响应.
 
-Of course, you're free to throw any ``Exception`` class in your controller -
-Symfony will automatically return a 500 HTTP response code.
+当然,你可以在你的控制器类中抛出任何异常
+Symfony将自动返回一个500的HTTP响应
 
 .. code-block:: php
 
     throw new \Exception('Something went wrong!');
 
-In every case, an error page is shown to the end user and a full debug
-error page is shown to the developer (i.e. when you're using ``app_dev.php`` -
+在任何情况下, 显示给最终用户一个错误页面, 显示给开发人员一个完整的调试错误页面 (i.e. when you're using ``app_dev.php`` -
 see :ref:`page-creation-environments`).
 
-You'll want to customize the error page your user sees. To do that, see the
-":doc:`/cookbook/controller/error_pages`" cookbook recipe.
+如果想要定制错误页面. 请查看
+":doc:`/cookbook/controller/error_pages`" cookbook中的方法.
 
 .. index::
    single: Controller; The session
    single: Session
 
-Managing the Session
+管理Session
 --------------------
 
-Symfony provides a nice session object that you can use to store information
-about the user (be it a real person using a browser, a bot, or a web service)
-between requests. By default, Symfony stores the attributes in a cookie
-by using the native PHP sessions.
+Symfony提供了一个不错的会话对象,您可以使用它来存储用户信息 
+(真实的浏览器用户，机器人或者web服务). 默认情况下, 
+Symfony通过原生的PHP session把属性储存在一个cookie中.
 
-Storing and retrieving information from the session can be easily achieved
-from any controller::
+在控制器中很容易实现session的储存和读取::
 
     use Symfony\Component\HttpFoundation\Request;
 
@@ -587,12 +563,11 @@ session.
 Flash Messages
 ~~~~~~~~~~~~~~
 
-You can also store small messages that will be stored on the user's session
-for exactly one additional request. This is useful when processing a form:
-you want to redirect and have a special message shown on the *next* page.
-These types of messages are called "flash" messages.
+可以把一些短暂保存的文本信息储存在用户的session中. 通常使用在表单处理中:
+跳转到下一个页面的时候有特定的消息显示在页面中.
+这些类型的信息被称为 "flash" messages.
 
-For example, imagine you're processing a form submit::
+例如, 想象一下你处理的表单提交::
 
     use Symfony\Component\HttpFoundation\Request;
 
