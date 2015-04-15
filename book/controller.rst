@@ -112,7 +112,7 @@ Symfony 项目中的每一个请求处理都有着相同的简单生命周期.
 新的控制器返回一个简单的HTML页面. 在您的浏览器中查看此页面, 你需要创建一个路由, 
 把特定的URL映射到控制器:
 
-.. configuration-block::
+
 
     .. code-block:: php-annotations
 
