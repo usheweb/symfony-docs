@@ -170,11 +170,10 @@ Symfony 项目中的每一个请求处理都有着相同的简单生命周期.
 
         return $collection;
 
-Now, you can go to ``/hello/ryan`` (e.g. ``http://localhost:8000/hello/ryan``
+现在访问 ``/hello/ryan`` (e.g. ``http://localhost:8000/hello/ryan``
 if you're using the :doc:`built-in web server </cookbook/web_server/built_in>`)
-and Symfony will execute the ``HelloController::indexAction()`` controller
-and pass in ``ryan`` for the ``$name`` variable. Creating a "page" means
-simply creating a controller method and an associated route.
+Symfony 将会执行 ``HelloController::indexAction()`` 控制器，
+``ryan`` 被放到变量 ``$name`` 中. 通过一个简单的控制器方法并且路由联系起来就可创建一个页面。
 
 Simple, right?
 
